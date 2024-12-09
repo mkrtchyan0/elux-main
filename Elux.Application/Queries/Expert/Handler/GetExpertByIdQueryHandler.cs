@@ -11,7 +11,7 @@ namespace Elux.Application.Queries.Expert.Handler
     {
         public async Task<BaseResponse<ApplicationExpert>> Handle(GetExpertByIdQuery request, CancellationToken cancellationToken)
         {
-            var expert = await context.Experts.FirstOrDefaultAsync(x => x.Id == request.Id);
+            var expert = await context.Experts.SingleAsync(x => x.Id == request.Id, cancellationToken);
 
             if (expert == null)
                 return BaseResponse<ApplicationExpert>.Failed();

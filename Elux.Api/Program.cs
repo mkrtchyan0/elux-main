@@ -35,7 +35,7 @@ namespace Elux.Api
 
             if (string.IsNullOrEmpty(connectionString))
             {
-                throw new ArgumentNullException("Postgres connection string is not configured.");
+                throw new NotSupportedException("Postgres connection string is not configured.");
             }
             // Extension method for DbContext
             builder.Services.MyAddDbContext(connectionString);
