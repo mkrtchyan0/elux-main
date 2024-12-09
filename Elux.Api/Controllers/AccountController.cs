@@ -19,7 +19,6 @@ namespace Elux.Api.Controllers
         [Route("register")]
         public async Task<ActionResult> RegisterAsync(RegisterCommand command)
         {
-            var a = "Test commit.";
             var result = await mediator.Send(command);
             if (!result.Succeeded)
                 return BadRequest(result.Message);
