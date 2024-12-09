@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34728.123
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elux.Api", "Elux.Api.csproj", "{8317E7F7-6ACF-46FB-92C1-0EE3E0D78EA1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elux.Dal", "..\Elux.Dal\Elux.Dal.csproj", "{458B2CD7-807B-4EF3-A97B-5721C8C58BC7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elux.Domain", "..\Elux.Domain\Elux.Domain.csproj", "{BECDFCE7-3735-45D8-B58C-8F0D11BDCD70}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elux.Application", "..\Elux.Application\Elux.Application.csproj", "{87FD12BC-2EA1-4B1A-9BEB-D0E82726614C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elux.Notification", "..\Elux.Notification\Elux.Notification.csproj", "{8BB39360-5598-4D01-AAA2-CACF0C20C794}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8317E7F7-6ACF-46FB-92C1-0EE3E0D78EA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8317E7F7-6ACF-46FB-92C1-0EE3E0D78EA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8317E7F7-6ACF-46FB-92C1-0EE3E0D78EA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8317E7F7-6ACF-46FB-92C1-0EE3E0D78EA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{458B2CD7-807B-4EF3-A97B-5721C8C58BC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{458B2CD7-807B-4EF3-A97B-5721C8C58BC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{458B2CD7-807B-4EF3-A97B-5721C8C58BC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{458B2CD7-807B-4EF3-A97B-5721C8C58BC7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BECDFCE7-3735-45D8-B58C-8F0D11BDCD70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BECDFCE7-3735-45D8-B58C-8F0D11BDCD70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BECDFCE7-3735-45D8-B58C-8F0D11BDCD70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BECDFCE7-3735-45D8-B58C-8F0D11BDCD70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87FD12BC-2EA1-4B1A-9BEB-D0E82726614C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87FD12BC-2EA1-4B1A-9BEB-D0E82726614C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87FD12BC-2EA1-4B1A-9BEB-D0E82726614C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87FD12BC-2EA1-4B1A-9BEB-D0E82726614C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BB39360-5598-4D01-AAA2-CACF0C20C794}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BB39360-5598-4D01-AAA2-CACF0C20C794}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BB39360-5598-4D01-AAA2-CACF0C20C794}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BB39360-5598-4D01-AAA2-CACF0C20C794}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4C69E199-FEA5-423A-8CDF-A2EEAED53473}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Commands\Blog\**" />
+    <Compile Remove="Commands\Cart\**" />
+    <EmbeddedResource Remove="Commands\Blog\**" />
+    <EmbeddedResource Remove="Commands\Cart\**" />
+    <None Remove="Commands\Blog\**" />
+    <None Remove="Commands\Cart\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="11.10.0" />
+    <PackageReference Include="MediatR" Version="12.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Elux.Dal\Elux.Dal.csproj" />
+    <ProjectReference Include="..\Elux.Domain\Elux.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
