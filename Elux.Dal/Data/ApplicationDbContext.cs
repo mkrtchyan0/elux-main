@@ -23,8 +23,10 @@ namespace Elux.Dal.Data
         // DbSet for ServiceGroup and Service tables
         public DbSet<ServiceGroup> ServiceGroups { get; set; }
         public DbSet<Service> Services { get; set; }
-        // DbSet for ContactRequest and Cart-related entities
+        // DbSet for ContactRequest and Cart-related entities 
         public DbSet<ContactRequest> ContactRequests { get; set; }
+        public DbSet<AboutUs> About { get; set; }
+        public DbSet<Post>
         public DbSet<CartDraftItem> CartDrafts { get; set; }
         public DbSet<CartItem> Carts { get; set; }
         public DbSet<BookServiceItem> BookServiceItems { get; set; }

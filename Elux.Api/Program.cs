@@ -1,15 +1,10 @@
 using Elux.Api.Extensions;
 using Elux.Application.Commands.User;
 using Elux.Application.Commands.User.Handlers;
-using Elux.Dal.Data;
 using Elux.Dal.Events;
-using Elux.Domain.Entities;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using MediatR;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Elux.Api
@@ -124,7 +119,7 @@ namespace Elux.Api
             //    });
             //});
             #endregion
-            
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
