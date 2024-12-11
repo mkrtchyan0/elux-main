@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Elux.Dal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Elux.Dal.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241211161224_TestMigration")]
+    partial class TestMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -180,34 +183,6 @@ namespace Elux.Dal.Migrations
                     b.HasIndex("CartItemId");
 
                     b.ToTable("BookServiceItems");
-                });
-
-            modelBuilder.Entity("Elux.Domain.Entities.Booking", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("ApplicationExpertId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("Day")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("EndingTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("ExpertId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("StartingTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationExpertId");
-
-                    b.ToTable("Bookings");
                 });
 
             modelBuilder.Entity("Elux.Domain.Entities.CartDraftItem", b =>
@@ -485,13 +460,6 @@ namespace Elux.Dal.Migrations
                         .HasForeignKey("CartItemId");
                 });
 
-            modelBuilder.Entity("Elux.Domain.Entities.Booking", b =>
-                {
-                    b.HasOne("Elux.Domain.Entities.ApplicationExpert", null)
-                        .WithMany("Bookings")
-                        .HasForeignKey("ApplicationExpertId");
-                });
-
             modelBuilder.Entity("Elux.Domain.Entities.ExpertsWork", b =>
                 {
                     b.HasOne("Elux.Domain.Entities.ApplicationExpert", null)
@@ -552,8 +520,6 @@ namespace Elux.Dal.Migrations
 
             modelBuilder.Entity("Elux.Domain.Entities.ApplicationExpert", b =>
                 {
-                    b.Navigation("Bookings");
-
                     b.Navigation("Works");
                 });
 

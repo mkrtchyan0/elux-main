@@ -13,7 +13,7 @@
         /// <summary>
         /// Gets or sets the list of services associated with this draft item.
         /// </summary>
-        public List<BookServiceItem> Services { get; set; }
+        public List<BookServiceItem> BookItems { get; set; }
 
         /// <summary>
         /// Gets or sets the total price for all services in this draft item.

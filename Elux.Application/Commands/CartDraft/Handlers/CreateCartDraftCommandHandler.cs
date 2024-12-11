@@ -14,10 +14,10 @@ namespace Elux.Application.Commands.CartDraft.Handlers
                 if (request.CartDraftId != null)
                 {
                     var id = (Guid)request.CartDraftId;
-                    var resutl = await mediator.Send(
-                        new UpdateCartDraftCommand { CartDraftId = id, Services = request.Services },
+                    var result = await mediator.Send(
+                        new UpdateCartDraftCommand { CartDraftId = id, Services = request.BookItems },
                         cancellationToken);
-                    if (resutl) 
+                    if (result)
                     {
                         var updatedCartDraft = context.CartDrafts.Find(id);
                         return BaseResponse<CartDraftItem>.Success(updatedCartDraft);
@@ -27,8 +27,8 @@ namespace Elux.Application.Commands.CartDraft.Handlers
                 }
                 CartDraftItem newCartDraftItem = new()
                 {
-                    Services = request.Services,
-                    TotalPrice = request.Services.Sum(s => s.TotalPrice),
+                    BookItems = request.BookItems,
+                    TotalPrice = request.BookItems.Sum(s => s.TotalPrice),
                 };
                 context.CartDrafts.Add(newCartDraftItem);
                 await context.SaveChangesAsync(cancellationToken);

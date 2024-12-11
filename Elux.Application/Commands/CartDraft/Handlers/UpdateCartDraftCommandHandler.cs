@@ -10,7 +10,6 @@ namespace Elux.Application.Commands.CartDraft.Handlers
         {
             try
             {
-                //Add trancation Vardan jan!!!!!!!
                 var deleteResult = await mediator.Send(new DeleteBookServiceItemCommand { CartDraftId = request.CartDraftId }, cancellationToken);
                 var addResult = await mediator.Send(new AddBookServiceItemCommand { CartDraftId = request.CartDraftId, Items = request.Services }, cancellationToken);
                 await context.SaveChangesAsync(cancellationToken);

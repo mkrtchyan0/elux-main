@@ -1,4 +1,5 @@
 ﻿using Elux.Domain.Entities;
+using Elux.Domain.Models;
 using MediatR;
 
 namespace Elux.Application.Commands.CartDraft.BookService

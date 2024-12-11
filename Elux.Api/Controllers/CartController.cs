@@ -13,9 +13,8 @@ namespace Elux.Api.Controllers
     public class CartController(IMediator mediator) : ControllerBase
     {
         [HttpPost("cartdraft")]
-        public async Task<AppResponse> AddCartDeaft([FromBody] CreateCartDraftCommand command)
+        public async Task<AppResponse> AddCartDraft([FromBody] CreateCartDraftCommand command)
         {
-
             return await mediator.Send(command);
         }
     }

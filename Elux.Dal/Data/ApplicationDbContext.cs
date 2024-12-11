@@ -26,7 +26,8 @@ namespace Elux.Dal.Data
         // DbSet for ContactRequest and Cart-related entities 
         public DbSet<ContactRequest> ContactRequests { get; set; }
         public DbSet<AboutUs> About { get; set; }
-        public DbSet<Post>
+        public DbSet<Booking> Bookings { get; set; }
+        //public DbSet<Post>
         public DbSet<CartDraftItem> CartDrafts { get; set; }
         public DbSet<CartItem> Carts { get; set; }
         public DbSet<BookServiceItem> BookServiceItems { get; set; }
