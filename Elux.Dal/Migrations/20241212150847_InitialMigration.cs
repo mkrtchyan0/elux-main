@@ -8,11 +8,23 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Elux.Dal.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "About",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Text = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_About", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -132,7 +144,7 @@ namespace Elux.Dal.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     GroupId = table.Column<Guid>(type: "uuid", nullable: false),
-                    ServiceName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    ServiceName = table.Column<string>(type: "text", nullable: true),
                     Duration = table.Column<int>(type: "integer", nullable: false),
                     Price = table.Column<int>(type: "integer", nullable: false)
                 },
@@ -248,31 +260,52 @@ namespace Elux.Dal.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BookServiceItems",
+                name: "BookServiceItem",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    DraftId = table.Column<Guid>(type: "uuid", nullable: false),
-                    ExpertsId = table.Column<Guid>(type: "uuid", nullable: false),
-                    SubServiceId = table.Column<List<Guid>>(type: "uuid[]", nullable: true),
-                    TotalPrice = table.Column<decimal>(type: "numeric", nullable: false),
+                    CartDraftItemId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ExpertId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ServiceIds = table.Column<Guid>(type: "uuid", nullable: false),
+                    TotalPrice = table.Column<decimal>(type: "numeric(18,2)", nullable: false),
                     ServiceDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     ServiceDuration = table.Column<int>(type: "integer", nullable: false),
-                    CartDraftItemId = table.Column<Guid>(type: "uuid", nullable: true),
                     CartItemId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BookServiceItems", x => x.Id);
+                    table.PrimaryKey("PK_BookServiceItem", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BookServiceItems_CartDrafts_CartDraftItemId",
+                        name: "FK_BookServiceItem_CartDrafts_CartDraftItemId",
                         column: x => x.CartDraftItemId,
                         principalTable: "CartDrafts",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_BookServiceItems_Carts_CartItemId",
+                        name: "FK_BookServiceItem_Carts_CartItemId",
                         column: x => x.CartItemId,
                         principalTable: "Carts",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Bookings",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    ExpertId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Day = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    StartingTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    EndingTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ApplicationExpertId = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bookings", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Bookings_Experts_ApplicationExpertId",
+                        column: x => x.ApplicationExpertId,
+                        principalTable: "Experts",
                         principalColumn: "Id");
                 });
 
@@ -332,13 +365,18 @@ namespace Elux.Dal.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_BookServiceItems_CartDraftItemId",
-                table: "BookServiceItems",
+                name: "IX_Bookings_ApplicationExpertId",
+                table: "Bookings",
+                column: "ApplicationExpertId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BookServiceItem_CartDraftItemId",
+                table: "BookServiceItem",
                 column: "CartDraftItemId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BookServiceItems_CartItemId",
-                table: "BookServiceItems",
+                name: "IX_BookServiceItem_CartItemId",
+                table: "BookServiceItem",
                 column: "CartItemId");
 
             migrationBuilder.CreateIndex(
@@ -350,6 +388,9 @@ namespace Elux.Dal.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "About");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -366,7 +407,10 @@ namespace Elux.Dal.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "BookServiceItems");
+                name: "Bookings");
+
+            migrationBuilder.DropTable(
+                name: "BookServiceItem");
 
             migrationBuilder.DropTable(
                 name: "ContactRequests");

@@ -15,14 +15,14 @@ namespace Elux.Application.Commands.CartDraft.Handlers
                 {
                     var newItem = new BookServiceItem
                     {
-                        DraftId = item.DraftId,
-                        SubServiceId = item.SubServiceId,
-                        ExpertsId = item.ExpertsId,
+                        CartDraftItemId = item.CartDraftItemId,
+                        ServiceIds = item.ServiceIds,
+                        ExpertId = item.ExpertId,
                         ServiceDuration = item.ServiceDuration,
                         ServiceDate = item.ServiceDate,
                         TotalPrice = item.TotalPrice,
                     };
-                    context.BookServiceItems.Add(newItem);
+                    //context.BookServiceItems.Add(newItem);
                 }
                 await context.SaveChangesAsync(cancellationToken);
                 return true;

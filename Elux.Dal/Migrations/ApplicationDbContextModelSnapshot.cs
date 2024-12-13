@@ -149,16 +149,13 @@ namespace Elux.Dal.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("CartDraftItemId")
+                    b.Property<Guid>("CartDraftItemId")
                         .HasColumnType("uuid");
 
                     b.Property<Guid?>("CartItemId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("DraftId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("ExpertsId")
+                    b.Property<Guid>("ExpertId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("ServiceDate")
@@ -167,11 +164,11 @@ namespace Elux.Dal.Migrations
                     b.Property<int>("ServiceDuration")
                         .HasColumnType("integer");
 
-                    b.Property<List<Guid>>("SubServiceId")
-                        .HasColumnType("uuid[]");
+                    b.Property<Guid>("ServiceIds")
+                        .HasColumnType("uuid");
 
                     b.Property<decimal>("TotalPrice")
-                        .HasColumnType("numeric");
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
@@ -179,7 +176,7 @@ namespace Elux.Dal.Migrations
 
                     b.HasIndex("CartItemId");
 
-                    b.ToTable("BookServiceItems");
+                    b.ToTable("BookServiceItem");
                 });
 
             modelBuilder.Entity("Elux.Domain.Entities.Booking", b =>
@@ -476,13 +473,17 @@ namespace Elux.Dal.Migrations
 
             modelBuilder.Entity("Elux.Domain.Entities.BookServiceItem", b =>
                 {
-                    b.HasOne("Elux.Domain.Entities.CartDraftItem", null)
+                    b.HasOne("Elux.Domain.Entities.CartDraftItem", "CartDraftItem")
                         .WithMany("BookItems")
-                        .HasForeignKey("CartDraftItemId");
+                        .HasForeignKey("CartDraftItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Elux.Domain.Entities.CartItem", null)
                         .WithMany("Services")
                         .HasForeignKey("CartItemId");
+
+                    b.Navigation("CartDraftItem");
                 });
 
             modelBuilder.Entity("Elux.Domain.Entities.Booking", b =>

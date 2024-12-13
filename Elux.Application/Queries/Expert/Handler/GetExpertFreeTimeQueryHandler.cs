@@ -1,5 +1,6 @@
 ﻿using Elux.Dal.Data;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Elux.Application.Queries.Expert.Handler
 {
@@ -7,7 +8,7 @@ namespace Elux.Application.Queries.Expert.Handler
     {
         public async Task<ICollection<(DateTime, DateTime)>> Handle(GetExpertFreeTimeQuery request, CancellationToken cancellationToken)
         {
-            var expert = context.Experts.FirstOrDefault(x => x.Id == request.ExpertId);
+            var expert = await context.Experts.SingleAsync(x => x.Id == request.ExpertId, cancellationToken);
             if (expert == null)
             {
                 throw new ArgumentException("Expert not found!");
@@ -18,6 +19,7 @@ namespace Elux.Application.Queries.Expert.Handler
             {
 
             }
+            return new List<(DateTime, DateTime)>();
         }
     }
 }

@@ -13,17 +13,17 @@
         /// <summary>
         /// Gets or sets the identifier of the draft associated with the service item.
         /// </summary>
-        public Guid DraftId { get; set; }
+        public Guid CartDraftItemId { get; set; }
 
         /// <summary>
         /// Gets or sets the identifier of the expert providing the service.
         /// </summary>
-        public Guid ExpertsId { get; set; }
+        public Guid ExpertId { get; set; }
 
         /// <summary>
-        /// Gets or sets a list of identifiers for sub-services associated with the service item.
+        /// Gets or sets a list of identifiers for services associated with the service item.
         /// </summary>
-        public List<Guid> SubServiceId { get; set; }
+        public Guid ServiceIds { get; set; }
 
         /// <summary>
         /// Gets or sets the total price of the service item.
@@ -39,5 +39,6 @@
         /// Gets or sets the duration of the service in minutes.
         /// </summary>
         public int ServiceDuration { get; set; }
+        public CartDraftItem CartDraftItem { get; set; }
     }
 }

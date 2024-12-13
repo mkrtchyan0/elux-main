@@ -15,10 +15,10 @@
 //            // Uncomment the following to configure a relationship with the ServiceGroup entity
 //            // This code is commented out, but it configures a one-to-many relationship
 //            // where each service belongs to one ServiceGroup, but a ServiceGroup can have many Services.
-//            // builder.HasOne(service => service.ServiceGroup)
-//            //     .WithMany(group => group.Services)
-//            //     .HasForeignKey(service => service.ServiceGroupId)
-//            //     .IsRequired();
+//            builder.HasOne(service => service.ServiceGroup)
+//                .WithMany(group => group.Services)
+//                .HasForeignKey(service => service.ServiceGroupId)
+//                .IsRequired();
 
 //            // Configure the Id property to be required and auto-generated
 //            builder.Property(x => x.Id)
