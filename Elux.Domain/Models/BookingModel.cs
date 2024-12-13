@@ -1,9 +1,7 @@
-﻿namespace Elux.Domain.Entities
+﻿namespace Elux.Domain.Models
 {
-    public class Booking
+    public class BookingModel
     {
-        public Guid Id { get; set; }
-        public Guid ExpertId { get; set; }
         public int Day { get; set; }
         public int StartingTime { get; set; }
         public int EndingTime { get; set; }

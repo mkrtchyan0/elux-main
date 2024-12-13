@@ -176,7 +176,7 @@ namespace Elux.Dal.Migrations
 
                     b.HasIndex("CartItemId");
 
-                    b.ToTable("BookServiceItem");
+                    b.ToTable("BookServiceItems");
                 });
 
             modelBuilder.Entity("Elux.Domain.Entities.Booking", b =>
@@ -185,24 +185,19 @@ namespace Elux.Dal.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("ApplicationExpertId")
-                        .HasColumnType("uuid");
+                    b.Property<int>("Day")
+                        .HasColumnType("integer");
 
-                    b.Property<DateTime>("Day")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("EndingTime")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("EndingTime")
+                        .HasColumnType("integer");
 
                     b.Property<Guid>("ExpertId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("StartingTime")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("StartingTime")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ApplicationExpertId");
 
                     b.ToTable("Bookings");
                 });
@@ -486,13 +481,6 @@ namespace Elux.Dal.Migrations
                     b.Navigation("CartDraftItem");
                 });
 
-            modelBuilder.Entity("Elux.Domain.Entities.Booking", b =>
-                {
-                    b.HasOne("Elux.Domain.Entities.ApplicationExpert", null)
-                        .WithMany("Bookings")
-                        .HasForeignKey("ApplicationExpertId");
-                });
-
             modelBuilder.Entity("Elux.Domain.Entities.ExpertsWork", b =>
                 {
                     b.HasOne("Elux.Domain.Entities.ApplicationExpert", null)
@@ -553,8 +541,6 @@ namespace Elux.Dal.Migrations
 
             modelBuilder.Entity("Elux.Domain.Entities.ApplicationExpert", b =>
                 {
-                    b.Navigation("Bookings");
-
                     b.Navigation("Works");
                 });
 

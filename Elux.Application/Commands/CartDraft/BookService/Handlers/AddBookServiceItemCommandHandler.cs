@@ -1,6 +1,7 @@
 ﻿using Elux.Application.Commands.CartDraft.BookService;
 using Elux.Dal.Data;
 using Elux.Domain.Entities;
+using Elux.Domain.Models;
 using MediatR;
 
 namespace Elux.Application.Commands.CartDraft.Handlers
@@ -22,7 +23,16 @@ namespace Elux.Application.Commands.CartDraft.Handlers
                         ServiceDate = item.ServiceDate,
                         TotalPrice = item.TotalPrice,
                     };
-                    //context.BookServiceItems.Add(newItem);
+
+                    Booking model = new()
+                    {
+                        Day = newItem.ServiceDate.Day,
+                        StartingTime = newItem.ServiceDate.Hour + newItem.ServiceDate.Minute,
+                        EndingTime = newItem.ServiceDate.Hour + newItem.ServiceDate.Minute + newItem.ServiceDuration,
+                        ExpertId = newItem.ExpertId
+                    };
+                    context.BookServiceItems.Add(newItem);
+                    context.Bookings.Add(model);
                 }
                 await context.SaveChangesAsync(cancellationToken);
                 return true;

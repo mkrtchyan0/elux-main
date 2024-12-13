@@ -49,6 +49,6 @@
         /// Gets or sets a list of certificates the expert holds.
         /// </summary>
         public List<string> Certificate { get; set; }
-        public ICollection<Booking> Bookings { get; set; }
+        //public ICollection<Booking> Bookings { get; set; }
     }
 }

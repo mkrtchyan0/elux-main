@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Elux.Dal.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -65,6 +65,21 @@ namespace Elux.Dal.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Bookings",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    ExpertId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Day = table.Column<int>(type: "integer", nullable: false),
+                    StartingTime = table.Column<int>(type: "integer", nullable: false),
+                    EndingTime = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bookings", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -260,7 +275,7 @@ namespace Elux.Dal.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BookServiceItem",
+                name: "BookServiceItems",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -274,38 +289,17 @@ namespace Elux.Dal.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BookServiceItem", x => x.Id);
+                    table.PrimaryKey("PK_BookServiceItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BookServiceItem_CartDrafts_CartDraftItemId",
+                        name: "FK_BookServiceItems_CartDrafts_CartDraftItemId",
                         column: x => x.CartDraftItemId,
                         principalTable: "CartDrafts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_BookServiceItem_Carts_CartItemId",
+                        name: "FK_BookServiceItems_Carts_CartItemId",
                         column: x => x.CartItemId,
                         principalTable: "Carts",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Bookings",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    ExpertId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Day = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    StartingTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    EndingTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    ApplicationExpertId = table.Column<Guid>(type: "uuid", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Bookings", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Bookings_Experts_ApplicationExpertId",
-                        column: x => x.ApplicationExpertId,
-                        principalTable: "Experts",
                         principalColumn: "Id");
                 });
 
@@ -365,18 +359,13 @@ namespace Elux.Dal.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Bookings_ApplicationExpertId",
-                table: "Bookings",
-                column: "ApplicationExpertId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BookServiceItem_CartDraftItemId",
-                table: "BookServiceItem",
+                name: "IX_BookServiceItems_CartDraftItemId",
+                table: "BookServiceItems",
                 column: "CartDraftItemId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BookServiceItem_CartItemId",
-                table: "BookServiceItem",
+                name: "IX_BookServiceItems_CartItemId",
+                table: "BookServiceItems",
                 column: "CartItemId");
 
             migrationBuilder.CreateIndex(
@@ -410,7 +399,7 @@ namespace Elux.Dal.Migrations
                 name: "Bookings");
 
             migrationBuilder.DropTable(
-                name: "BookServiceItem");
+                name: "BookServiceItems");
 
             migrationBuilder.DropTable(
                 name: "ContactRequests");
