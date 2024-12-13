@@ -18,6 +18,7 @@ namespace Elux.Application.Queries.Expert.Handler
             {
 
             }
+            return new List<(DateTime, DateTime)>();
         }
     }
 }
