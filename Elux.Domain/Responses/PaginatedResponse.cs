@@ -6,7 +6,6 @@
     /// <typeparam name="T">The type of data being returned.</typeparam>
     public class PaginatedResponse<T> : AppResponse
     {
-        //Test Commit?
         /// <summary>
         /// Gets the current page index (zero-based).
         /// </summary>
