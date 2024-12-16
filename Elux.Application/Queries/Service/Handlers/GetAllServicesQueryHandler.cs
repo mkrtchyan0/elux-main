@@ -2,7 +2,8 @@
 using Elux.Domain.Entities; // Importing the ServiceGroup entity
 using Elux.Domain.HelperClasses; // Importing helper classes like PaginatedList
 using Elux.Domain.Responses; // Importing PaginatedResponse for standard responses
-using MediatR; // For CQRS implementation
+using MediatR;
+using Microsoft.EntityFrameworkCore; // For CQRS implementation
 
 namespace Elux.Application.Queries.Service.Handlers
 {
@@ -25,7 +26,7 @@ namespace Elux.Application.Queries.Service.Handlers
         public async Task<PaginatedResponse<PaginatedList<ServiceGroup>>> Handle(GetAllServicesQuery request, CancellationToken cancellationToken)
         {
             // Fetch all ServiceGroups from the database
-            var services = _context.ServiceGroups.ToList();
+            var services = await _context.ServiceGroups.ToListAsync(cancellationToken);
 
             // If no services are found, return a failed response
             if (services == null || !services.Any())

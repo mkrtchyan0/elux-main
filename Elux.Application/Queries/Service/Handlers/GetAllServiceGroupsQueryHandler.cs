@@ -1,6 +1,7 @@
 ﻿using Elux.Dal.Data; // Importing ApplicationDbContext for database interaction
 using Elux.Domain.Entities; // Importing ServiceGroup entity
-using MediatR; // For CQRS implementation
+using MediatR;
+using Microsoft.EntityFrameworkCore; // For CQRS implementation
 
 namespace Elux.Application.Queries.Service.Handlers
 {
@@ -34,7 +35,7 @@ namespace Elux.Application.Queries.Service.Handlers
                 }
 
                 // Return the list of groups
-                return groups.ToList();
+                return await groups.ToListAsync(cancellationToken);
             }
             catch (Exception ex)
             {

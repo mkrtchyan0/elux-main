@@ -4,8 +4,10 @@ using MediatR;
 
 namespace Elux.Application.Queries.Expert
 {
-    public class GetExpertBusyTimeQuery : IRequest<BaseResponse<List<BookingModel>>>
+    public class ExpertBookingsQuery : IRequest<BaseResponse<List<BookingModel>>>
     {
         public Guid ExpertId { get; set; }
+
+        public DateTime DateTime { get; set; }
     }
 }

@@ -26,7 +26,7 @@ namespace Elux.Application.Commands.CartDraft.Handlers
 
                     Booking model = new()
                     {
-                        Day = newItem.ServiceDate.Day,
+                        DateTime = newItem.ServiceDate,
                         StartingTime = newItem.ServiceDate.Hour + newItem.ServiceDate.Minute,
                         EndingTime = newItem.ServiceDate.Hour + newItem.ServiceDate.Minute + newItem.ServiceDuration,
                         ExpertId = newItem.ExpertId

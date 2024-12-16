@@ -1,6 +1,5 @@
-﻿using Elux.Domain.Responses.User; // Importing user-related responses
-using MediatR; // Importing MediatR for request/handler pattern
-using Microsoft.AspNetCore.Http; // Importing ASP.NET Core's HttpContext
+﻿using MediatR;
+using Microsoft.AspNetCore.Http;
 
 namespace Elux.Application.Commands.User
 {

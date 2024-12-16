@@ -4,6 +4,7 @@ using Elux.Domain.HelperClasses;
 using Elux.Domain.Responses;
 using Elux.Domain.Responses.User;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Elux.Application.Queries.User.Handlers
 {
@@ -34,14 +35,15 @@ namespace Elux.Application.Queries.User.Handlers
         public async Task<PaginatedResponse<PaginatedList<UserResponse>>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
         {
             // Retrieve the users from the database and map them to UserResponse objects
-            IEnumerable<UserResponse> users = _context.Users.Select(x => new UserResponse
+            IEnumerable<UserResponse> users = await _context.Users.Select(x => new UserResponse
             {
                 Id = x.Id,
                 FirstName = x.FirstName,
                 LastName = x.LastName,
                 IsDeleted = x.IsDeleted,
                 UserName = x.Email,
-            });
+            })
+                .ToListAsync(cancellationToken);
 
             // Create a PaginatedList to manage the subset of users based on page index and page size
             var paginatedUsers = new PaginatedList<UserResponse>(users, request.PageIndex, request.PageSize);

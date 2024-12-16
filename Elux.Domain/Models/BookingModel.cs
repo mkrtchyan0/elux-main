@@ -2,7 +2,7 @@
 {
     public class BookingModel
     {
-        public int Day { get; set; }
+        public DateTime DateTime { get; set; }
         public int StartingTime { get; set; }
         public int EndingTime { get; set; }
     }

@@ -40,5 +40,11 @@ namespace Elux.Api.Controllers
             var command = await mediator.Send(new DeleteExpertCommand { Id = expertId}, token);
             return (command);
         }
+        [HttpPost]
+        [Route("booking/all")]
+        public async Task<AppResponse> GetBookings([FromBody]ExpertBookingsQuery query, CancellationToken token)
+        {
+           return await mediator.Send(query, token);
+        }
     }
 }

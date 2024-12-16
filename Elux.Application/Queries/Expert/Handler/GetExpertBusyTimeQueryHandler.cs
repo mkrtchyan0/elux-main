@@ -1,4 +1,5 @@
 ﻿using Elux.Dal.Data;
+using Elux.Domain.Entities;
 using Elux.Domain.Models;
 using Elux.Domain.Responses;
 using MediatR;
@@ -6,34 +7,47 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Elux.Application.Queries.Expert.Handler
 {
-    public class GetExpertBusyTimeQueryHandler(ApplicationDbContext context) : IRequestHandler<GetExpertBusyTimeQuery, BaseResponse<List<BookingModel>>>
+    public class GetExpertBusyTimeQueryHandler(ApplicationDbContext context) : IRequestHandler<ExpertBookingsQuery, BaseResponse<List<BookingModel>>>
     {
-        public async Task<BaseResponse<List<BookingModel>>> Handle(GetExpertBusyTimeQuery request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<List<BookingModel>>> Handle(ExpertBookingsQuery request, CancellationToken cancellationToken)
         {
-            var expert = await context.Experts.SingleAsync(x => x.Id == request.ExpertId, cancellationToken);
-            if (expert == null)
+            try
             {
-                throw new ArgumentException("Expert not found!");
-            }
-            var bookingDates = context.Bookings.Where(ex => ex.ExpertId == expert.Id);
+                var expert = await context.Experts.SingleAsync(x => x.Id == request.ExpertId, cancellationToken) ?? throw new ArgumentException("Expert not found!");
 
-            if (bookingDates == null)
-            {
-                throw new ArgumentException($"{expert.FirstName}'s Booking Dates not found!");
-            }
+                var bookings = await context.Bookings.
+                    Where(ex => ex.ExpertId == expert.Id && ex.DateTime == request.DateTime)
+                    .Select(b => 
+                    new BookingModel
+                    {
+                        DateTime = b.DateTime,  
+                        StartingTime = b.StartingTime,
+                        EndingTime = b.EndingTime,
+                    })
+                    .ToListAsync(cancellationToken);
 
-            List<BookingModel> bookings = new List<BookingModel>();
-
-            foreach (var bookingDate in bookingDates)
-            {
-                bookings.Add(new BookingModel
+                if (bookings == null)
                 {
-                    Day = bookingDate.Day,
-                    StartingTime = bookingDate.StartingTime,
-                    EndingTime = bookingDate.EndingTime
-                });
+                    return BaseResponse<List<BookingModel>>.Success("No booking found!");
+                }
+                //if(CheckBooking(bookings, request.s))
+                return BaseResponse<List<BookingModel>>.Success(bookings);
+
             }
-            return BaseResponse<List<BookingModel>>.Success(bookings);
+            catch (Exception ex)
+            {
+                return BaseResponse<List<BookingModel>>.Failed(ex.Message);
+            }
+        }
+        public bool CheckBooking(IQueryable<Booking> bookings, int startTime, int endTimne)
+        {
+            foreach (var booking in bookings)
+            {
+                if (startTime < booking.StartingTime && endTimne < booking.StartingTime
+                    || startTime > booking.EndingTime && endTimne > booking.EndingTime)
+                    return true;
+            }
+            return false;
         }
     }
 }

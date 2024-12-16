@@ -2,7 +2,8 @@
 using Elux.Domain.Entities; // Importing the ApplicationExpert entity class
 using Elux.Domain.HelperClasses; // Importing PaginatedList for pagination functionality
 using Elux.Domain.Responses; // Importing PaginatedResponse for structured response
-using MediatR; // Importing MediatR for request/handler pattern
+using MediatR;
+using Microsoft.EntityFrameworkCore; // Importing MediatR for request/handler pattern
 
 namespace Elux.Application.Queries.Expert.Handler
 {
@@ -17,7 +18,7 @@ namespace Elux.Application.Queries.Expert.Handler
         public async Task<PaginatedResponse<PaginatedList<ApplicationExpert>>> Handle(GetAllExpertsQuery request, CancellationToken cancellationToken)
         {
             // Fetching all experts from the database
-            var experts = context.Experts.ToList();
+            var experts = await context.Experts.ToListAsync(cancellationToken);
 
             // If no experts are found, return a failed response
             if (experts == null)

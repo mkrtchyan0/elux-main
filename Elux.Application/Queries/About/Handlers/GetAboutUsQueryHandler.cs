@@ -2,6 +2,7 @@
 using Elux.Domain.Entities;
 using Elux.Domain.Responses;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Elux.Application.Queries.About.Handlers
 {
@@ -9,7 +10,7 @@ namespace Elux.Application.Queries.About.Handlers
     {
         public async Task<BaseResponse<AboutUs>> Handle(GetAboutUsQuery request, CancellationToken cancellationToken)
         {
-            var about = context.About.FirstOrDefault();
+            var about = await context.About.FirstOrDefaultAsync(cancellationToken);
             if (about != null)
             {
                 return BaseResponse<AboutUs>.Success(about);
