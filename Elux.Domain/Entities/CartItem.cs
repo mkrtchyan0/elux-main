@@ -13,6 +13,8 @@
         /// <summary>
         /// Gets or sets the list of services associated with the cart item.
         /// </summary>
-        public List<BookServiceItem> Services { get; set; }
+        public Guid BookServiceItemId { get; set; }
+        //public List<BookServiceItem> Services { get; set; }
+        public int TotalPrice { get; set; }
     }
 }

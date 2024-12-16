@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Elux.Dal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Elux.Dal.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241216202201_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -149,38 +152,15 @@ namespace Elux.Dal.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("CartId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("ExpertId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("ServiceDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("ServiceDuration")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid>("ServiceIds")
-                        .HasColumnType("uuid");
-
-                    b.Property<decimal>("TotalPrice")
-                        .HasColumnType("numeric");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("BookServiceItems");
-                });
-
-            modelBuilder.Entity("Elux.Domain.Entities.BookServiceItemDraft", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
                     b.Property<Guid>("CartDraftId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("CartDraftItemId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("CartItemId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid>("ExpertId")
                         .HasColumnType("uuid");
 
@@ -198,7 +178,11 @@ namespace Elux.Dal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BookServiceItemsDraft");
+                    b.HasIndex("CartDraftItemId");
+
+                    b.HasIndex("CartItemId");
+
+                    b.ToTable("BookServiceItems");
                 });
 
             modelBuilder.Entity("Elux.Domain.Entities.Booking", b =>
@@ -497,6 +481,17 @@ namespace Elux.Dal.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Elux.Domain.Entities.BookServiceItem", b =>
+                {
+                    b.HasOne("Elux.Domain.Entities.CartDraftItem", null)
+                        .WithMany("Services")
+                        .HasForeignKey("CartDraftItemId");
+
+                    b.HasOne("Elux.Domain.Entities.CartItem", null)
+                        .WithMany("Services")
+                        .HasForeignKey("CartItemId");
+                });
+
             modelBuilder.Entity("Elux.Domain.Entities.ExpertsWork", b =>
                 {
                     b.HasOne("Elux.Domain.Entities.ApplicationExpert", null)
@@ -558,6 +553,16 @@ namespace Elux.Dal.Migrations
             modelBuilder.Entity("Elux.Domain.Entities.ApplicationExpert", b =>
                 {
                     b.Navigation("Works");
+                });
+
+            modelBuilder.Entity("Elux.Domain.Entities.CartDraftItem", b =>
+                {
+                    b.Navigation("Services");
+                });
+
+            modelBuilder.Entity("Elux.Domain.Entities.CartItem", b =>
+                {
+                    b.Navigation("Services");
                 });
 #pragma warning restore 612, 618
         }

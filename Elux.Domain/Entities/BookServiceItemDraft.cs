@@ -1,9 +1,12 @@
-﻿namespace Elux.Domain.Entities
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Elux.Domain.Entities
 {
-    /// <summary>
-    /// Represents a service item that is part of a booking.
-    /// </summary>
-    public class BookServiceItem
+    public class BookServiceItemDraft
     {
         /// <summary>
         /// Gets or sets the unique identifier for the service item.
@@ -13,7 +16,7 @@
         /// <summary>
         /// Gets or sets the identifier of the draft associated with the service item.
         /// </summary>
-        public Guid CartId { get; set; }
+        public Guid CartDraftId { get; set; }
 
         /// <summary>
         /// Gets or sets the identifier of the expert providing the service.

@@ -73,7 +73,7 @@ namespace Elux.Dal.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     ExpertId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Day = table.Column<int>(type: "integer", nullable: false),
+                    DateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     StartingTime = table.Column<int>(type: "integer", nullable: false),
                     EndingTime = table.Column<int>(type: "integer", nullable: false)
                 },
@@ -87,6 +87,7 @@ namespace Elux.Dal.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    BookServiceItemDraftId = table.Column<Guid>(type: "uuid", nullable: false),
                     TotalPrice = table.Column<decimal>(type: "numeric", nullable: false)
                 },
                 constraints: table =>
@@ -98,7 +99,9 @@ namespace Elux.Dal.Migrations
                 name: "Carts",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    BookServiceItemId = table.Column<Guid>(type: "uuid", nullable: false),
+                    TotalPrice = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -279,12 +282,13 @@ namespace Elux.Dal.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    CartDraftItemId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CartDraftId = table.Column<Guid>(type: "uuid", nullable: false),
                     ExpertId = table.Column<Guid>(type: "uuid", nullable: false),
                     ServiceIds = table.Column<Guid>(type: "uuid", nullable: false),
-                    TotalPrice = table.Column<decimal>(type: "numeric(18,2)", nullable: false),
+                    TotalPrice = table.Column<decimal>(type: "numeric", nullable: false),
                     ServiceDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     ServiceDuration = table.Column<int>(type: "integer", nullable: false),
+                    CartDraftItemId = table.Column<Guid>(type: "uuid", nullable: true),
                     CartItemId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
@@ -294,8 +298,7 @@ namespace Elux.Dal.Migrations
                         name: "FK_BookServiceItems_CartDrafts_CartDraftItemId",
                         column: x => x.CartDraftItemId,
                         principalTable: "CartDrafts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_BookServiceItems_Carts_CartItemId",
                         column: x => x.CartItemId,

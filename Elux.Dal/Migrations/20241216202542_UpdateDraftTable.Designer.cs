@@ -13,8 +13,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Elux.Dal.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241213165332_Initial")]
-    partial class Initial
+    [Migration("20241216202542_UpdateDraftTable")]
+    partial class UpdateDraftTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -152,7 +152,10 @@ namespace Elux.Dal.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("CartDraftItemId")
+                    b.Property<Guid>("CartDraftId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("CartDraftItemId")
                         .HasColumnType("uuid");
 
                     b.Property<Guid?>("CartItemId")
@@ -171,7 +174,7 @@ namespace Elux.Dal.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<decimal>("TotalPrice")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("numeric");
 
                     b.HasKey("Id");
 
@@ -179,7 +182,7 @@ namespace Elux.Dal.Migrations
 
                     b.HasIndex("CartItemId");
 
-                    b.ToTable("BookServiceItems");
+                    b.ToTable("BookServiceItem");
                 });
 
             modelBuilder.Entity("Elux.Domain.Entities.Booking", b =>
@@ -188,8 +191,8 @@ namespace Elux.Dal.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<int>("Day")
-                        .HasColumnType("integer");
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("EndingTime")
                         .HasColumnType("integer");
@@ -211,6 +214,9 @@ namespace Elux.Dal.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("BookServiceItemDraftId")
+                        .HasColumnType("uuid");
+
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("numeric");
 
@@ -224,6 +230,12 @@ namespace Elux.Dal.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<Guid>("BookServiceItemId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("TotalPrice")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -471,17 +483,13 @@ namespace Elux.Dal.Migrations
 
             modelBuilder.Entity("Elux.Domain.Entities.BookServiceItem", b =>
                 {
-                    b.HasOne("Elux.Domain.Entities.CartDraftItem", "CartDraftItem")
-                        .WithMany("BookItems")
-                        .HasForeignKey("CartDraftItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("Elux.Domain.Entities.CartDraftItem", null)
+                        .WithMany("Services")
+                        .HasForeignKey("CartDraftItemId");
 
                     b.HasOne("Elux.Domain.Entities.CartItem", null)
                         .WithMany("Services")
                         .HasForeignKey("CartItemId");
-
-                    b.Navigation("CartDraftItem");
                 });
 
             modelBuilder.Entity("Elux.Domain.Entities.ExpertsWork", b =>
@@ -549,7 +557,7 @@ namespace Elux.Dal.Migrations
 
             modelBuilder.Entity("Elux.Domain.Entities.CartDraftItem", b =>
                 {
-                    b.Navigation("BookItems");
+                    b.Navigation("Services");
                 });
 
             modelBuilder.Entity("Elux.Domain.Entities.CartItem", b =>

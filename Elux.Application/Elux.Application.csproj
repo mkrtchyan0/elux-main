@@ -10,11 +10,8 @@
 
   <ItemGroup>
     <Compile Remove="Commands\Blog\**" />
-    <Compile Remove="Commands\Cart\**" />
     <EmbeddedResource Remove="Commands\Blog\**" />
-    <EmbeddedResource Remove="Commands\Cart\**" />
     <None Remove="Commands\Blog\**" />
-    <None Remove="Commands\Cart\**" />
   </ItemGroup>
 
   <ItemGroup>

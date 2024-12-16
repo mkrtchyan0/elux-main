@@ -27,10 +27,11 @@ namespace Elux.Dal.Data
         public DbSet<ContactRequest> ContactRequests { get; set; }
         public DbSet<AboutUs> About { get; set; }
         public DbSet<Booking> Bookings { get; set; }
-        //public DbSet<Post>
+        //public DbSet<Post> 
         public DbSet<CartDraftItem> CartDrafts { get; set; }
         public DbSet<CartItem> Carts { get; set; }
         public DbSet<BookServiceItem> BookServiceItems { get; set; }
+        public DbSet<BookServiceItemDraft> BookServiceItemsDraft { get; set; }
 
         // Configures the context to use Npgsql (PostgreSQL) as the database provider
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

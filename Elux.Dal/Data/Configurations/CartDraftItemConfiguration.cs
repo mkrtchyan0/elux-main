@@ -20,7 +20,7 @@ namespace Elux.Dal.Data.Configurations
                 .ValueGeneratedOnAdd(); // Auto-generates the value when a new record is created
 
             // Configure the Services property to be required and set a maximum length of 3
-            //builder.Ignore(x => x.BookItems);                  
+            builder.Ignore(x => x.BookItems);                  
 
 
             // Configure the TotalPrice property to be required
