@@ -6,8 +6,6 @@
     public class CartItem
     {
         public Guid Id { get; set; }
-        public Guid BookServiceItemId { get; set; }
-        public int TotalPrice { get; set; }
-        //public List<BookServiceItem> Services { get; set; }
+        public decimal TotalPrice { get; set; }        
     }
 }

@@ -14,9 +14,9 @@ namespace Elux.Application.Commands.CartDraft.Handlers
             {
                 foreach (var item in request.Items)
                 {
-                    var newItem = new BookServiceItem
+                    var newItem = new BookServiceItemDraft
                     {
-                        CartId = item.CartId,
+                        CartDraftId = item.CartDraftId,
                         ServiceIds = item.ServiceIds,
                         ExpertId = item.ExpertId,
                         ServiceDuration = item.ServiceDuration,
@@ -31,7 +31,7 @@ namespace Elux.Application.Commands.CartDraft.Handlers
                         EndingTime = newItem.ServiceDate.Hour + newItem.ServiceDate.Minute + newItem.ServiceDuration,
                         ExpertId = newItem.ExpertId
                     };
-                    context.BookServiceItems.Add(newItem);
+                    context.BookServiceItemsDraft.Add(newItem);
                     context.Bookings.Add(model);
                 }
                 await context.SaveChangesAsync(cancellationToken);

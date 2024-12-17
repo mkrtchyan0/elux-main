@@ -13,8 +13,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Elux.Dal.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241216202542_UpdateDraftTable")]
-    partial class UpdateDraftTable
+    [Migration("20241217155645_UpdateTables")]
+    partial class UpdateTables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -152,13 +152,36 @@ namespace Elux.Dal.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("CartId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ExpertId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("ServiceDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("ServiceDuration")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("ServiceIds")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BookServiceItems");
+                });
+
+            modelBuilder.Entity("Elux.Domain.Entities.BookServiceItemDraft", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
                     b.Property<Guid>("CartDraftId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("CartDraftItemId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("CartItemId")
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("ExpertId")
@@ -178,11 +201,7 @@ namespace Elux.Dal.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CartDraftItemId");
-
-                    b.HasIndex("CartItemId");
-
-                    b.ToTable("BookServiceItem");
+                    b.ToTable("BookServiceItemsDraft");
                 });
 
             modelBuilder.Entity("Elux.Domain.Entities.Booking", b =>
@@ -231,11 +250,8 @@ namespace Elux.Dal.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("BookServiceItemId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("TotalPrice")
-                        .HasColumnType("integer");
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("numeric");
 
                     b.HasKey("Id");
 
@@ -481,17 +497,6 @@ namespace Elux.Dal.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Elux.Domain.Entities.BookServiceItem", b =>
-                {
-                    b.HasOne("Elux.Domain.Entities.CartDraftItem", null)
-                        .WithMany("Services")
-                        .HasForeignKey("CartDraftItemId");
-
-                    b.HasOne("Elux.Domain.Entities.CartItem", null)
-                        .WithMany("Services")
-                        .HasForeignKey("CartItemId");
-                });
-
             modelBuilder.Entity("Elux.Domain.Entities.ExpertsWork", b =>
                 {
                     b.HasOne("Elux.Domain.Entities.ApplicationExpert", null)
@@ -553,16 +558,6 @@ namespace Elux.Dal.Migrations
             modelBuilder.Entity("Elux.Domain.Entities.ApplicationExpert", b =>
                 {
                     b.Navigation("Works");
-                });
-
-            modelBuilder.Entity("Elux.Domain.Entities.CartDraftItem", b =>
-                {
-                    b.Navigation("Services");
-                });
-
-            modelBuilder.Entity("Elux.Domain.Entities.CartItem", b =>
-                {
-                    b.Navigation("Services");
                 });
 #pragma warning restore 612, 618
         }

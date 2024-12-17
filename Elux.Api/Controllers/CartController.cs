@@ -1,4 +1,5 @@
-﻿using Elux.Application.Commands.CartDraft;
+﻿using Elux.Application.Commands.Cart;
+using Elux.Application.Commands.CartDraft;
 using Elux.Domain.Responses;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +15,11 @@ namespace Elux.Api.Controllers
     {
         [HttpPost("cartdraft")]
         public async Task<AppResponse> AddCartDraft([FromBody] CreateCartDraftCommand command)
+        {
+            return await mediator.Send(command);
+        }
+        [HttpPost("cart")]
+        public async Task<AppResponse> AddCart([FromBody] CreateCartCommand command)
         {
             return await mediator.Send(command);
         }

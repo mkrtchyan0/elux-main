@@ -6,7 +6,6 @@ namespace Elux.Application.Commands.Cart
 {
     public class CreateCartCommand : IRequest<AppResponse>
     {
-        public Guid Id { get; set; }
         public Guid CartDraftId { get; set; }
     }
 }

@@ -7,7 +7,7 @@
     {
         public Guid Id { get; set; }
         public Guid BookServiceItemDraftId { get; set; }
-        public List<BookServiceItem> BookItems { get; set; }
+        public List<BookServiceItemDraft> BookItems { get; set; }
         public decimal TotalPrice { get; set; }
     }
 }

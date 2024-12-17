@@ -1,10 +1,10 @@
 using Elux.Api.Extensions;
 using Elux.Application.Commands.User;
 using Elux.Application.Commands.User.Handlers;
+using Elux.Dal.Data;
 using Elux.Dal.Events;
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Elux.Api
@@ -144,7 +144,8 @@ namespace Elux.Api
 
             app.MapControllers();
 
-            app.Run();
+            app.MigrateContext<ApplicationDbContext>()
+                .Run();
         }
     }
 }

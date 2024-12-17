@@ -134,5 +134,24 @@
         /// Gets or sets the message associated with the response.
         /// </summary>
         public string Message { get; set; }
+
+        public static AppResponse Failed()
+        {
+            return new AppResponse()
+            {
+                StatusCode = "400",
+                Message = "Failed",
+                Succeeded = false,
+            };
+        }
+        public static AppResponse Success()
+        {
+            return new AppResponse()
+            {
+                StatusCode = "200",
+                Succeeded = true,
+                Message = "Succeeded."
+            };
+        }
     }
 }

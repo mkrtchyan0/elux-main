@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Elux.Dal.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class UpdateTables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -83,6 +83,40 @@ namespace Elux.Dal.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "BookServiceItems",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    CartId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ExpertId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ServiceIds = table.Column<Guid>(type: "uuid", nullable: false),
+                    TotalPrice = table.Column<decimal>(type: "numeric(18,2)", nullable: false),
+                    ServiceDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ServiceDuration = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BookServiceItems", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BookServiceItemsDraft",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    CartDraftId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ExpertId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ServiceIds = table.Column<Guid>(type: "uuid", nullable: false),
+                    TotalPrice = table.Column<decimal>(type: "numeric", nullable: false),
+                    ServiceDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ServiceDuration = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BookServiceItemsDraft", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CartDrafts",
                 columns: table => new
                 {
@@ -100,8 +134,7 @@ namespace Elux.Dal.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    BookServiceItemId = table.Column<Guid>(type: "uuid", nullable: false),
-                    TotalPrice = table.Column<int>(type: "integer", nullable: false)
+                    TotalPrice = table.Column<decimal>(type: "numeric", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -278,35 +311,6 @@ namespace Elux.Dal.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BookServiceItems",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    CartDraftId = table.Column<Guid>(type: "uuid", nullable: false),
-                    ExpertId = table.Column<Guid>(type: "uuid", nullable: false),
-                    ServiceIds = table.Column<Guid>(type: "uuid", nullable: false),
-                    TotalPrice = table.Column<decimal>(type: "numeric", nullable: false),
-                    ServiceDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    ServiceDuration = table.Column<int>(type: "integer", nullable: false),
-                    CartDraftItemId = table.Column<Guid>(type: "uuid", nullable: true),
-                    CartItemId = table.Column<Guid>(type: "uuid", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BookServiceItems", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_BookServiceItems_CartDrafts_CartDraftItemId",
-                        column: x => x.CartDraftItemId,
-                        principalTable: "CartDrafts",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_BookServiceItems_Carts_CartItemId",
-                        column: x => x.CartItemId,
-                        principalTable: "Carts",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ExpertsWork",
                 columns: table => new
                 {
@@ -362,16 +366,6 @@ namespace Elux.Dal.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_BookServiceItems_CartDraftItemId",
-                table: "BookServiceItems",
-                column: "CartDraftItemId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BookServiceItems_CartItemId",
-                table: "BookServiceItems",
-                column: "CartItemId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ExpertsWork_ApplicationExpertId",
                 table: "ExpertsWork",
                 column: "ApplicationExpertId");
@@ -405,6 +399,15 @@ namespace Elux.Dal.Migrations
                 name: "BookServiceItems");
 
             migrationBuilder.DropTable(
+                name: "BookServiceItemsDraft");
+
+            migrationBuilder.DropTable(
+                name: "CartDrafts");
+
+            migrationBuilder.DropTable(
+                name: "Carts");
+
+            migrationBuilder.DropTable(
                 name: "ContactRequests");
 
             migrationBuilder.DropTable(
@@ -421,12 +424,6 @@ namespace Elux.Dal.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "CartDrafts");
-
-            migrationBuilder.DropTable(
-                name: "Carts");
 
             migrationBuilder.DropTable(
                 name: "Experts");

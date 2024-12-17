@@ -23,5 +23,16 @@ namespace Elux.Api.Extensions
 
             return services;
         }
+        public static WebApplication MigrateContext<TContext>(this WebApplication app) where TContext : DbContext
+        {
+            using var scope = app.Services.CreateScope();
+
+            var context = scope.ServiceProvider.GetRequiredService<TContext>();
+
+            if(context.Database.GetPendingMigrations().Any())
+                context.Database.Migrate();
+
+            return app;
+        }
     }
 }

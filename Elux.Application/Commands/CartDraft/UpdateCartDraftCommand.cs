@@ -7,6 +7,6 @@ namespace Elux.Application.Commands.CartDraft
     public class UpdateCartDraftCommand : IRequest<bool>
     {
         public Guid CartDraftId { get; set; }
-        public List<BookServiceItem> Services { get; set; }
+        public List<BookServiceItemDraft> Services { get; set; }
     }
 }
