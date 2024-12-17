@@ -40,7 +40,8 @@ namespace Elux.Application.Queries.Service.Handlers
             catch (Exception ex)
             {
                 // Log the exception (optional: implement logging)
-                throw new Exception("An error occurred while fetching service groups.", ex);
+                //throw new Exception("An error occurred while fetching service groups.", ex);
+                return new List<ServiceGroup>();
             }
         }
     }

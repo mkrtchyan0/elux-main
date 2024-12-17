@@ -33,7 +33,9 @@ namespace Elux.Api
                 throw new NotSupportedException("Postgres connection string is not configured.");
             }
             // Extension method for DbContext
-            builder.Services.MyAddDbContext(connectionString);
+            builder.AddCustomDbContext();
+
+            //builder.Services.AddCustomDbContextByServices(builder.Configuration);
 
             // Extension method for Identity configuration
             builder.Services.AddCustomIdentity();

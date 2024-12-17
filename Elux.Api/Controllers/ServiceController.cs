@@ -1,6 +1,4 @@
-﻿using Elux.Application.Commands.Question;
-using Elux.Application.Commands.Services;
-using Elux.Application.Queries.Expert;
+﻿using Elux.Application.Commands.Services;
 using Elux.Application.Queries.Service;
 using Elux.Domain.Responses;
 using MediatR;
@@ -45,16 +43,17 @@ namespace Elux.Api.Controllers
         [Route("serivcegroup/id")]
         public async Task<IActionResult> GetServiceGroupById([FromQuery] Guid ServiceGroupId)
         {
-            var query = await mediator.Send(new GetServiceGroupById { Id = ServiceGroupId});
+            var query = await mediator.Send(new GetServiceGroupById { Id = ServiceGroupId });
 
             return Ok(query);
         }
         [HttpGet]
-        [Route("serivcegroup/all")]        
+        [Route("serivcegroup/all")]
         public async Task<IActionResult> GetAllServiceGroups(CancellationToken token)
         {
             var result = await mediator.Send(new GetAllServiceGroupsQuery(), token);
-
+            if (result.Count == 0)
+                return NotFound();
             return Ok(result);
         }
     }
