@@ -8,7 +8,7 @@ namespace Elux.Application.Queries.Service
     /// <summary>
     /// Query to retrieve a paginated list of services for a specific service group.
     /// </summary>
-    public class GetAllServicesQuery : IRequest<PaginatedResponse<PaginatedList<ServiceGroup>>>
+    public class GetAllServicesQuery : IRequest<PaginatedResponse<PaginatedList<Elux.Domain.Entities.Service>>>
     {
         /// <summary>
         /// Gets or sets the ID of the service group to filter services.

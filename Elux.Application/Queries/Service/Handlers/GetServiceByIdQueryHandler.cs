@@ -10,7 +10,7 @@ namespace Elux.Application.Queries.Service.Handlers
     /// <summary>
     /// Handles the query to get a ServiceGroup by its ID.
     /// </summary>
-    public class GetServiceByIdQueryHandler : IRequestHandler<GetServiceByIdQuery, BaseResponse<ServiceGroup>>
+    public class GetServiceByIdQueryHandler : IRequestHandler<GetServiceByIdQuery, BaseResponse<Elux.Domain.Entities.Service>>
     {
         private readonly ApplicationDbContext _context;
 
@@ -23,17 +23,17 @@ namespace Elux.Application.Queries.Service.Handlers
         /// <summary>
         /// Handles the query to retrieve a ServiceGroup by ID.
         /// </summary>
-        public async Task<BaseResponse<ServiceGroup>> Handle(GetServiceByIdQuery request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<Elux.Domain.Entities.Service>> Handle(GetServiceByIdQuery request, CancellationToken cancellationToken)
         {
             // Fetch the service group by ID from the database asynchronously
-            var service = await _context.ServiceGroups.FirstOrDefaultAsync(x => x.Id == request.Id);
+            var service = await _context.Services.FirstOrDefaultAsync(x => x.Id == request.Id);
 
             // If the service group is not found, return a failed response
             if (service == null)
-                return BaseResponse<ServiceGroup>.Failed();
+                return BaseResponse<Elux.Domain.Entities.Service>.Failed();
 
             // Return a successful response with the found service group
-            return BaseResponse<ServiceGroup>.Success(service);
+            return BaseResponse<Elux.Domain.Entities.Service>.Success(service);
         }
     }
 

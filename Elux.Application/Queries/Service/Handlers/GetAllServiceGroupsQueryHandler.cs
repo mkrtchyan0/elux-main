@@ -1,5 +1,7 @@
 ﻿using Elux.Dal.Data; // Importing ApplicationDbContext for database interaction
 using Elux.Domain.Entities; // Importing ServiceGroup entity
+using Elux.Domain.HelperClasses;
+using Elux.Domain.Responses;
 using MediatR;
 using Microsoft.EntityFrameworkCore; // For CQRS implementation
 
@@ -8,7 +10,7 @@ namespace Elux.Application.Queries.Service.Handlers
     /// <summary>
     /// Handles the query to get all ServiceGroups.
     /// </summary>
-    public class GetAllServiceGroupsQueryHandler : IRequestHandler<GetAllServiceGroupsQuery, List<ServiceGroup>>
+    public class GetAllServiceGroupsQueryHandler : IRequestHandler<GetAllServiceGroupsQuery, PaginatedList<Elux.Domain.Entities.Service>>
     {
         private readonly ApplicationDbContext _context;
 
@@ -21,27 +23,31 @@ namespace Elux.Application.Queries.Service.Handlers
         /// <summary>
         /// Handles the GetAllServiceGroupsQuery to return a list of all ServiceGroups.
         /// </summary>
-        public async Task<List<ServiceGroup>> Handle(GetAllServiceGroupsQuery request, CancellationToken cancellationToken)
+        public async Task<PaginatedList<Elux.Domain.Entities.Service>> Handle(GetAllServiceGroupsQuery request, CancellationToken cancellationToken)
         {
             try
-            {
-                // Retrieve the ServiceGroups from the context
-                var groups = _context.ServiceGroups;
+            {  // Fetch all ServiceGroups from the database
+                var services = _context.Services.ToList();//.ToListAsync(cancellationToken);
 
-                // If no groups are found, throw an exception
-                if (groups == null || !groups.Any())
+                // If no services are found, return a failed response
+                if (services == null || !services.Any())
                 {
-                    throw new ArgumentNullException(nameof(groups), "No service groups found.");
+                    return null;
+                }
+                if (request.ServiceGroupId == null)
+                {
+                    return new PaginatedList<Elux.Domain.Entities.Service>(services, request.PageIndex, request.PageSize);
                 }
 
-                // Return the list of groups
-                return await groups.ToListAsync(cancellationToken);
+                var servicesWithGroupId = services.Where(x => x.GroupId.ToString() == request.ServiceGroupId);
+
+                return new PaginatedList<Elux.Domain.Entities.Service>(servicesWithGroupId, request.PageIndex, request.PageSize);
             }
             catch (Exception ex)
             {
                 // Log the exception (optional: implement logging)
                 //throw new Exception("An error occurred while fetching service groups.", ex);
-                return new List<ServiceGroup>();
+                return null;
             }
         }
     }

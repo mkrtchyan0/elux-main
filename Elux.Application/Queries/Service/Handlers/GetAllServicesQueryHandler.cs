@@ -10,7 +10,7 @@ namespace Elux.Application.Queries.Service.Handlers
     /// <summary>
     /// Handles the query to get all ServiceGroups with pagination support.
     /// </summary>
-    public class GetAllServicesQueryHandler : IRequestHandler<GetAllServicesQuery, PaginatedResponse<PaginatedList<ServiceGroup>>>
+    public class GetAllServicesQueryHandler : IRequestHandler<GetAllServicesQuery, PaginatedResponse<PaginatedList<Elux.Domain.Entities.Service>>>
     {
         private readonly ApplicationDbContext _context;
 
@@ -23,27 +23,40 @@ namespace Elux.Application.Queries.Service.Handlers
         /// <summary>
         /// Handles the GetAllServicesQuery to return a paginated list of ServiceGroups.
         /// </summary>
-        public async Task<PaginatedResponse<PaginatedList<ServiceGroup>>> Handle(GetAllServicesQuery request, CancellationToken cancellationToken)
+        public async Task<PaginatedResponse<PaginatedList<Elux.Domain.Entities.Service>>> Handle(GetAllServicesQuery request, CancellationToken cancellationToken)
         {
             // Fetch all ServiceGroups from the database
-            var services = await _context.ServiceGroups.ToListAsync(cancellationToken);
+            var services = await _context.Services.ToListAsync(cancellationToken);
 
             // If no services are found, return a failed response
             if (services == null || !services.Any())
             {
-                return PaginatedResponse<PaginatedList<ServiceGroup>>.Failed();
+                return PaginatedResponse<PaginatedList<Elux.Domain.Entities.Service>>.Failed();
+            }
+            if (request.ServiceGroupId == null)
+            {
+                var paginatedServicesList = new PaginatedList<Elux.Domain.Entities.Service>(services, request.PageIndex, request.PageSize);
+
+                // Return a successful PaginatedResponse with pagination data
+                return new PaginatedResponse<PaginatedList<Elux.Domain.Entities.Service>>(
+                    paginatedServicesList,
+                    paginatedServicesList.PageIndex,
+                    paginatedServicesList.PageSize,
+                    paginatedServicesList.TotalCount,
+                    paginatedServicesList.TotalPages);
             }
 
-            // Create a PaginatedList based on the services retrieved and pagination info
-            var paginatedList = new PaginatedList<ServiceGroup>(services, request.PageIndex, request.PageSize);
+            var servicesWithGroupId = services.Where(x => x.GroupId.ToString() == request.ServiceGroupId);
+
+            var paginatedServicesWithGroupIdList = new PaginatedList<Elux.Domain.Entities.Service>(servicesWithGroupId, request.PageIndex, request.PageSize);
 
             // Return a successful PaginatedResponse with pagination data
-            return new PaginatedResponse<PaginatedList<ServiceGroup>>(
-                paginatedList,
-                paginatedList.PageIndex,
-                paginatedList.PageSize,
-                paginatedList.TotalCount,
-                paginatedList.TotalPages);
+            return new PaginatedResponse<PaginatedList<Elux.Domain.Entities.Service>>(
+                paginatedServicesWithGroupIdList,
+                paginatedServicesWithGroupIdList.PageIndex,
+                paginatedServicesWithGroupIdList.PageSize,
+                paginatedServicesWithGroupIdList.TotalCount,
+                paginatedServicesWithGroupIdList.TotalPages);
         }
     }
 }

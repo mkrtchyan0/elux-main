@@ -7,7 +7,7 @@ namespace Elux.Application.Queries.Service
     /// <summary>
     /// Query to retrieve a service by its ID.
     /// </summary>
-    public class GetServiceByIdQuery : IRequest<BaseResponse<ServiceGroup>>
+    public class GetServiceByIdQuery : IRequest<BaseResponse<Elux.Domain.Entities.Service>>
     {
         /// <summary>
         /// Gets or sets the ID of the service.

@@ -27,9 +27,9 @@ namespace Elux.Api.Controllers
         }
         [HttpGet]
         [Route("services")]
-        public async Task<IActionResult> GetAllServices([FromQuery] string serviceGrouId, [FromQuery] int index = 1, [FromQuery] int size = 5)
+        public async Task<IActionResult> GetAllServices([FromQuery] string serviceGroupId = null, [FromQuery] int index = 1, [FromQuery] int size = 5)
         {
-            var result = await mediator.Send(new GetAllServicesQuery() { ServiceGroupId = serviceGrouId, PageIndex = index, PageSize = size });
+            var result = await mediator.Send(new GetAllServicesQuery() { ServiceGroupId = serviceGroupId, PageIndex = index, PageSize = size });
 
             return Ok(result);
         }
