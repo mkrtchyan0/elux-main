@@ -1,20 +1,7 @@
-﻿namespace Elux.Domain.Entities
+﻿namespace Elux.Domain.Models
 {
-    public class BookServiceItemDraft
+    public class BookServiceItemDraftModel
     {
-        /// <summary>
-        /// Gets or sets the unique identifier for the service item.
-        /// </summary>
-        public Guid Id { get; set; }
-
-        /// <summary>
-        /// Gets or sets the identifier of the draft associated with the service item.
-        /// </summary>
-        public Guid CartDraftId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the identifier of the expert providing the service.
-        /// </summary>
         public Guid ExpertId { get; set; }
 
         /// <summary>

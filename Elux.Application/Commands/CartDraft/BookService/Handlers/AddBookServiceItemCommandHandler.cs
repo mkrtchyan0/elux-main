@@ -16,7 +16,7 @@ namespace Elux.Application.Commands.CartDraft.Handlers
                 {
                     var newItem = new BookServiceItemDraft
                     {
-                        CartDraftId = item.CartDraftId,
+                        CartDraftId = request.CartDraftId,
                         ServiceIds = item.ServiceIds,
                         ExpertId = item.ExpertId,
                         ServiceDuration = item.ServiceDuration,

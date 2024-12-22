@@ -17,10 +17,10 @@ namespace Elux.Application.Queries.Expert.Handler
 
                 var bookings = await context.Bookings.
                     Where(ex => ex.ExpertId == expert.Id && ex.DateTime == request.DateTime)
-                    .Select(b => 
+                    .Select(b =>
                     new BookingModel
                     {
-                        DateTime = b.DateTime,  
+                        DateTime = b.DateTime,
                         StartingTime = b.StartingTime,
                         EndingTime = b.EndingTime,
                     })
@@ -39,7 +39,7 @@ namespace Elux.Application.Queries.Expert.Handler
                 return BaseResponse<List<BookingModel>>.Failed(ex.Message);
             }
         }
-        public bool CheckBooking(IQueryable<Booking> bookings, int startTime, int endTimne)
+        public static bool CheckBooking(IEnumerable<Booking> bookings, int startTime, int endTimne)
         {
             foreach (var booking in bookings)
             {

@@ -27,7 +27,7 @@ namespace Elux.Application.Commands.CartDraft.Handlers
                 }
                 CartDraftItem newCartDraftItem = new()
                 {
-                    BookItems = request.BookItems,
+                    //BookItems = request.BookItems,
                     TotalPrice = request.BookItems.Sum(s => s.TotalPrice),
                 };
                 context.CartDrafts.Add(newCartDraftItem);

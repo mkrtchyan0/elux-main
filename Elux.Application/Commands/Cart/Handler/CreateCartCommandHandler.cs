@@ -1,5 +1,7 @@
-﻿using Elux.Dal.Data;
+﻿using Elux.Application.Queries.Expert.Handler;
+using Elux.Dal.Data;
 using Elux.Domain.Entities;
+using Elux.Domain.Models;
 using Elux.Domain.Responses;
 using MediatR;
 
@@ -25,9 +27,26 @@ namespace Elux.Application.Commands.Cart.Handler
                     ServiceDuration = x.ServiceDuration,
                     ServiceIds = x.ServiceIds,
                     TotalPrice = x.TotalPrice
-                });
-            context.AddRange(bookDraftItems);
+                }).ToList();
 
+            var bookItems = new List<Booking>();
+            foreach (var item in bookDraftItems)
+            {
+                bookItems.Add(new Booking
+                {
+                    DateTime = item.ServiceDate,
+                    StartingTime = item.ServiceDate.Hour,
+                    EndingTime = item.ServiceDate.Hour + item.ServiceDuration,
+                    ExpertId = item.ExpertId
+                });
+            }
+            foreach (var bookItem in bookItems)
+            {
+                if (!GetExpertBusyTimeQueryHandler.CheckBooking(context.Bookings, bookItem.StartingTime, bookItem.EndingTime))
+                    return AppResponse.Failed();
+            }
+            context.Bookings.AddRange(bookItems);
+            context.BookServiceItems.AddRange(bookDraftItems);
             await context.SaveChangesAsync(cancellationToken);
 
             return AppResponse.Success();

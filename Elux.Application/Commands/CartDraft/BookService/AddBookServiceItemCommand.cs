@@ -7,6 +7,6 @@ namespace Elux.Application.Commands.CartDraft.BookService
     public class AddBookServiceItemCommand : IRequest<bool>
     {
         public Guid CartDraftId { get; set; }
-        public List<BookServiceItemDraft> Items {  get; set; } 
+        public List<BookServiceItemDraftModel> Items {  get; set; } 
     }
 }
