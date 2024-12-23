@@ -7,44 +7,45 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Elux.Application.Queries.Expert.Handler
 {
-    public class GetExpertBusyTimeQueryHandler(ApplicationDbContext context) : IRequestHandler<ExpertBookingsQuery, BaseResponse<List<BookingModel>>>
+    public class GetExpertBusyTimeQueryHandler(ApplicationDbContext context) : IRequestHandler<ExpertBookingsQuery, BaseResponse<List<Booking>>>
     {
-        public async Task<BaseResponse<List<BookingModel>>> Handle(ExpertBookingsQuery request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<List<Booking>>> Handle(ExpertBookingsQuery request, CancellationToken cancellationToken)
         {
             try
             {
+                var date = request.DateTime.Kind;
                 var expert = await context.Experts.SingleAsync(x => x.Id == request.ExpertId, cancellationToken) ?? throw new ArgumentException("Expert not found!");
 
                 var bookings = await context.Bookings.
-                    Where(ex => ex.ExpertId == expert.Id && ex.DateTime == request.DateTime)
+                    Where(ex => ex.ExpertId == expert.Id && ex.Date == DateOnly.FromDateTime(request.DateTime))
                     .Select(b =>
-                    new BookingModel
+                    new Booking
                     {
-                        DateTime = b.DateTime,
-                        StartingTime = b.StartingTime,
-                        EndingTime = b.EndingTime,
+                        Date = b.Date,
+                        Start = b.Start,
+                        End = b.End,
                     })
                     .ToListAsync(cancellationToken);
 
                 if (bookings == null)
                 {
-                    return BaseResponse<List<BookingModel>>.Success("No booking found!");
+                    return BaseResponse<List<Booking>>.Success("No booking found!");
                 }
                 //if(CheckBooking(bookings, request.s))
-                return BaseResponse<List<BookingModel>>.Success(bookings);
+                return BaseResponse<List<Booking>>.Success(bookings);
 
             }
             catch (Exception ex)
             {
-                return BaseResponse<List<BookingModel>>.Failed(ex.Message);
+                return BaseResponse<List<Booking>>.Failed(ex.Message);
             }
         }
-        public static bool CheckBooking(IEnumerable<Booking> bookings, int startTime, int endTimne)
+        public static bool CheckBooking(IEnumerable<Booking> bookings, TimeOnly startTime, TimeOnly endTimne)
         {
             foreach (var booking in bookings)
             {
-                if (startTime < booking.StartingTime && endTimne < booking.StartingTime
-                    || startTime > booking.EndingTime && endTimne > booking.EndingTime)
+                if (startTime < booking.Start && endTimne < booking.Start
+                    || startTime > booking.End && endTimne > booking.End)
                     return true;
             }
             return false;

@@ -1,4 +1,6 @@
-﻿namespace Elux.Domain.Models
+﻿using Elux.Domain.Entities;
+
+namespace Elux.Domain.Models
 {
     public class BookServiceItemDraftModel
     {
@@ -23,5 +25,26 @@
         /// Gets or sets the duration of the service in minutes.
         /// </summary>
         public int ServiceDuration { get; set; }
+        public static List<BookServiceItemDraft> Convert (List<BookServiceItemDraftModel> items, Guid cartDraftId)
+        {
+            ArgumentNullException.ThrowIfNull(items);
+
+            List<BookServiceItemDraft> result = [];
+            foreach (var item in items) 
+            {
+                var serviceDraftItem = new BookServiceItemDraft
+                {
+                    CartDraftId = cartDraftId,
+                    ExpertId = item.ExpertId,
+                    ServiceIds = item.ServiceIds,
+                    TotalPrice = item.TotalPrice,
+                    ServiceDate = item.ServiceDate,
+                    ServiceDuration = item.ServiceDuration,
+                       
+                };
+                result.Add(serviceDraftItem);
+            }
+            return result;
+        } 
     }
 }

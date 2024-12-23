@@ -1,7 +1,6 @@
 ﻿using Elux.Application.Queries.Expert.Handler;
 using Elux.Dal.Data;
 using Elux.Domain.Entities;
-using Elux.Domain.Models;
 using Elux.Domain.Responses;
 using MediatR;
 
@@ -28,21 +27,23 @@ namespace Elux.Application.Commands.Cart.Handler
                     ServiceIds = x.ServiceIds,
                     TotalPrice = x.TotalPrice
                 }).ToList();
-
+            var start = new TimeOnly(12, 00);
+            var end = start.AddMinutes(110);
             var bookItems = new List<Booking>();
             foreach (var item in bookDraftItems)
             {
                 bookItems.Add(new Booking
                 {
-                    DateTime = item.ServiceDate,
-                    StartingTime = item.ServiceDate.Hour,
-                    EndingTime = item.ServiceDate.Hour + item.ServiceDuration,
+                    Date = DateOnly.FromDateTime(item.ServiceDate.Date),
+                    Start = TimeOnly.FromDateTime(item.ServiceDate.Date),
+                    End = TimeOnly.FromDateTime(item.ServiceDate.Date).AddMinutes(20),
                     ExpertId = item.ExpertId
                 });
             }
             foreach (var bookItem in bookItems)
             {
-                if (!GetExpertBusyTimeQueryHandler.CheckBooking(context.Bookings, bookItem.StartingTime, bookItem.EndingTime))
+                var booking = context.Bookings.Where(x => x.ExpertId == bookItem.ExpertId && x.Date == bookItem.Date);
+                if (!GetExpertBusyTimeQueryHandler.CheckBooking(booking, bookItem.Start, bookItem.End))
                     return AppResponse.Failed();
             }
             context.Bookings.AddRange(bookItems);

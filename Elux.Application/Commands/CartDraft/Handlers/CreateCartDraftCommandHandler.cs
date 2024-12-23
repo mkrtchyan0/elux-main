@@ -1,5 +1,6 @@
 ﻿using Elux.Dal.Data;
 using Elux.Domain.Entities;
+using Elux.Domain.Models;
 using Elux.Domain.Responses;
 using MediatR;
 
@@ -27,10 +28,11 @@ namespace Elux.Application.Commands.CartDraft.Handlers
                 }
                 CartDraftItem newCartDraftItem = new()
                 {
-                    //BookItems = request.BookItems,
+                    //BookItems = BookServiceItemDraftModel.Convert(request.BookItems),
                     TotalPrice = request.BookItems.Sum(s => s.TotalPrice),
                 };
                 context.CartDrafts.Add(newCartDraftItem);
+                context.BookServiceItemsDraft.AddRange(BookServiceItemDraftModel.Convert(request.BookItems, newCartDraftItem.Id));
                 await context.SaveChangesAsync(cancellationToken);
                 return BaseResponse<CartDraftItem>.Success(newCartDraftItem);
             }

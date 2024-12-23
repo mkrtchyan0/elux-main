@@ -26,9 +26,9 @@ namespace Elux.Application.Commands.CartDraft.Handlers
 
                     Booking model = new()
                     {
-                        DateTime = newItem.ServiceDate,
-                        StartingTime = newItem.ServiceDate.Hour + newItem.ServiceDate.Minute,
-                        EndingTime = newItem.ServiceDate.Hour + newItem.ServiceDate.Minute + newItem.ServiceDuration,
+                        Date = DateOnly.FromDateTime(newItem.ServiceDate),
+                        Start = TimeOnly.FromDateTime( newItem.ServiceDate),
+                        End = TimeOnly.FromDateTime(newItem.ServiceDate).AddMinutes(newItem.ServiceDuration),
                         ExpertId = newItem.ExpertId
                     };
                     context.BookServiceItemsDraft.Add(newItem);
