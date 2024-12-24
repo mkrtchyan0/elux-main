@@ -16,7 +16,7 @@ namespace Elux.Application.Commands.Cart.Handler
 
             context.Carts.Add(newCart);
 
-            var bookDraftItems = context.BookServiceItemsDraft
+            var bookServiceItem = context.BookServiceItemsDraft
                 .Where(x => x.CartDraftId == cartDraft.Id)
                 .Select(x => new BookServiceItem
                 {
@@ -27,27 +27,33 @@ namespace Elux.Application.Commands.Cart.Handler
                     ServiceIds = x.ServiceIds,
                     TotalPrice = x.TotalPrice
                 }).ToList();
-            var start = new TimeOnly(12, 00);
-            var end = start.AddMinutes(110);
             var bookItems = new List<Booking>();
-            foreach (var item in bookDraftItems)
+            foreach (var item in bookServiceItem)
             {
                 bookItems.Add(new Booking
                 {
                     Date = DateOnly.FromDateTime(item.ServiceDate.Date),
-                    Start = TimeOnly.FromDateTime(item.ServiceDate.Date),
-                    End = TimeOnly.FromDateTime(item.ServiceDate.Date).AddMinutes(20),
-                    ExpertId = item.ExpertId
+                    Start = TimeOnly.FromDateTime(item.ServiceDate),
+                    End = TimeOnly.FromDateTime(item.ServiceDate).AddMinutes(20),
+                    ExpertId = item.ExpertId,
+                    ServiceId = item.ServiceIds
                 });
             }
             foreach (var bookItem in bookItems)
             {
                 var booking = context.Bookings.Where(x => x.ExpertId == bookItem.ExpertId && x.Date == bookItem.Date);
+                if (booking == null)
+                    break;
+
                 if (!GetExpertBusyTimeQueryHandler.CheckBooking(booking, bookItem.Start, bookItem.End))
-                    return AppResponse.Failed();
+                {
+                    var item = bookServiceItem.Where(x => x.ServiceIds == bookItem.ServiceId).FirstOrDefault();
+
+                    return AppResponse.Failed($"The {item.ServiceDuration} Service booking date already exists. \n Please check correct Date.");
+                }
             }
             context.Bookings.AddRange(bookItems);
-            context.BookServiceItems.AddRange(bookDraftItems);
+            context.BookServiceItems.AddRange(bookServiceItem);
             await context.SaveChangesAsync(cancellationToken);
 
             return AppResponse.Success();

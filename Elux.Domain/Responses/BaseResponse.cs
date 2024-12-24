@@ -135,12 +135,12 @@
         /// </summary>
         public string Message { get; set; }
 
-        public static AppResponse Failed()
+        public static AppResponse Failed(string message = "Failed")
         {
             return new AppResponse()
             {
                 StatusCode = "400",
-                Message = "Failed",
+                Message = message,
                 Succeeded = false,
             };
         }

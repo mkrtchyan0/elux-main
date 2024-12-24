@@ -1,6 +1,5 @@
 ﻿using Elux.Dal.Data;
 using Elux.Domain.Entities;
-using Elux.Domain.Models;
 using Elux.Domain.Responses;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -40,15 +39,21 @@ namespace Elux.Application.Queries.Expert.Handler
                 return BaseResponse<List<Booking>>.Failed(ex.Message);
             }
         }
-        public static bool CheckBooking(IEnumerable<Booking> bookings, TimeOnly startTime, TimeOnly endTimne)
+        public static bool CheckBooking(IEnumerable<Booking> bookings, TimeOnly startTime, TimeOnly endTime)
         {
+            TimeOnly opening = new TimeOnly(10, 00);
+            TimeOnly ending = new TimeOnly(22, 00);
+
+            if (startTime < opening || endTime > ending)
+                return false;
+
             foreach (var booking in bookings)
             {
-                if (startTime < booking.Start && endTimne < booking.Start
-                    || startTime > booking.End && endTimne > booking.End)
-                    return true;
+                if (!(startTime < booking.Start && endTime < booking.Start
+                    || startTime > booking.End && endTime > booking.End))
+                    return false;
             }
-            return false;
+            return true;
         }
     }
 }

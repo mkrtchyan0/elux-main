@@ -6,7 +6,6 @@
     public class CartDraftItem
     {
         public Guid Id { get; set; }
-        public Guid BookServiceItemDraftId { get; set; }
         public List<BookServiceItemDraft> BookItems { get; set; }
         public decimal TotalPrice { get; set; }
     }

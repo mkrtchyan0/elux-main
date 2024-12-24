@@ -18,12 +18,9 @@ namespace Elux.Dal.Data
             _configuration = configuration;
         }
 
-        // DbSet properties represent tables in the database
         public DbSet<ApplicationExpert> Experts { get; set; }
-        // DbSet for ServiceGroup and Service tables
         public DbSet<ServiceGroup> ServiceGroups { get; set; }
         public DbSet<Service> Services { get; set; }
-        // DbSet for ContactRequest and Cart-related entities 
         public DbSet<ContactRequest> ContactRequests { get; set; }
         public DbSet<AboutUs> About { get; set; }
         public DbSet<Booking> Bookings { get; set; }
@@ -33,28 +30,20 @@ namespace Elux.Dal.Data
         public DbSet<BookServiceItem> BookServiceItems { get; set; }
         public DbSet<BookServiceItemDraft> BookServiceItemsDraft { get; set; }
 
-        // Configures the context to use Npgsql (PostgreSQL) as the database provider
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-
-            // Uses the connection string defined in appsettings.json (or another configuration source)
             optionsBuilder.UseNpgsql(_configuration.GetConnectionString("Postgres"));
         }
-
-        // Configures the model using Fluent API
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            // Calls the base class method to apply default identity configurations
             base.OnModelCreating(builder);
 
-            // Applies custom configurations from the same assembly as ApplicationDbContext
             builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
 
-            // Configures the UserView entity to map to a database view
             builder
                 .Entity<UserView>()
-                .ToView("usersview") // Maps to the usersview database view
-                .HasKey(t => t.Id);  // Sets the primary key for UserView entity
+                .ToView("usersview")
+                .HasKey(t => t.Id); 
         }
     }
 }

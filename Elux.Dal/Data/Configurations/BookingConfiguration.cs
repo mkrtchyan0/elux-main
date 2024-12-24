@@ -20,27 +20,30 @@ namespace Elux.Dal.Data.Configurations
                 .HasColumnType<Guid>(null);
 
             builder.Property(b => b.Date)
-                    .HasConversion<DateOnlyConverter>();
+                .HasConversion<DateOnlyConverter>()
+                .HasColumnType("date"); 
 
             builder.Property(b => b.Start)
-                .HasConversion<TimeOnlyConverter>();
+                .HasConversion<TimeOnlyConverter>()
+                .HasColumnType("time"); 
 
             builder.Property(b => b.End)
-                .HasConversion<TimeOnlyConverter>();
+                .HasConversion<TimeOnlyConverter>()
+                .HasColumnType("time");
         }
     }
+
     public class DateOnlyConverter : ValueConverter<DateOnly, DateTime>
     {
         public DateOnlyConverter() : base(
-            dateOnly => dateOnly.ToDateTime(TimeOnly.MinValue),
+            dateOnly => DateTime.SpecifyKind(dateOnly.ToDateTime(TimeOnly.MinValue), DateTimeKind.Utc),
             dateTime => DateOnly.FromDateTime(dateTime))
         { }
     }
+
     public class TimeOnlyConverter : ValueConverter<TimeOnly, TimeSpan>
     {
-        public TimeOnlyConverter() : base(
-            timeOnly => timeOnly.ToTimeSpan(),
-            timeSpan => TimeOnly.FromTimeSpan(timeSpan))
-        { }
+        public TimeOnlyConverter() : base(timeOnly => timeOnly.ToTimeSpan(),timeSpan => TimeOnly.FromTimeSpan(timeSpan)){ }
     }
+
 }
