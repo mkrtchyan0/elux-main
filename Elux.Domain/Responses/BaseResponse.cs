@@ -1,4 +1,7 @@
-﻿namespace Elux.Domain.Responses
+﻿using Elux.Domain.Entities;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+
+namespace Elux.Domain.Responses
 {
     /// <summary>
     /// Represents a base response with generic data and standard response properties.
@@ -10,6 +13,7 @@
         /// Gets the response data.
         /// </summary>
         public T Data { get; private set; }
+        public List<T> ListData { get; private set; }
 
         /// <summary>
         /// Creates a successful response with default status and message.
@@ -51,6 +55,16 @@
             return new BaseResponse<T>()
             {
                 Data = data,
+                StatusCode = "200",
+                Succeeded = true,
+                Message = "Succeeded."
+            };
+        }
+        public static BaseResponse<T> Success(List<T> data)
+        {
+            return new BaseResponse<T>()
+            {
+                ListData = data,
                 StatusCode = "200",
                 Succeeded = true,
                 Message = "Succeeded."
@@ -100,6 +114,27 @@
             {
                 StatusCode = "400",
                 Message = "Failed",
+                Succeeded = false,
+            };
+        }
+        public static BaseResponse<T> Failed(T data, string message = "Failed.")
+        {
+            return new BaseResponse<T>()
+            {
+                Data = data,
+                StatusCode = "400",
+                Message = message,
+                Succeeded = false,
+            };
+        }
+
+        public static BaseResponse<T> Failed(List<T> data, string message = "Failed.")
+        {
+            return new BaseResponse<T>()
+            {
+                ListData = data,
+                StatusCode = "400",
+                Message = message,
                 Succeeded = false,
             };
         }

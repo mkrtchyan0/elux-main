@@ -23,7 +23,7 @@ namespace Elux.Application.Commands.Question.Handlers
                 };
                 context.ContactRequests.Add(question);
                 await context.SaveChangesAsync(cancellationToken);
-                await mediator.Send(new SendNotificationCommand { QuestionId = question.Id }, cancellationToken);
+                //await mediator.Send(new SendNotificationCommand { QuestionId = question.Id }, cancellationToken);
 
                 return (true, "Message saved.");
             }

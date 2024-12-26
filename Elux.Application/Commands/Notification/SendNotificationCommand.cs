@@ -4,6 +4,7 @@ namespace Elux.Application.Commands.Notification
 {
     public class SendNotificationCommand : IRequest<bool>
     {
-        public Guid QuestionId { get; set; }
+        public Guid Id { get; set; }
+        public string Message { get; set; }
     }
 }

@@ -6,9 +6,9 @@ using MediatR;
 
 namespace Elux.Application.Commands.Cart.Handler
 {
-    public class CreateCartCommandHandler(ApplicationDbContext context) : IRequestHandler<CreateCartCommand, AppResponse>
+    public class CreateCartCommandHandler(ApplicationDbContext context) : IRequestHandler<CreateCartCommand, BaseResponse<Booking>>
     {
-        public async Task<AppResponse> Handle(CreateCartCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<Booking>> Handle(CreateCartCommand request, CancellationToken cancellationToken)
         {
             var cartDraft = context.CartDrafts.Single(x => x.Id == request.CartDraftId) ?? throw new Exception("Draft not found!");
 
@@ -35,10 +35,12 @@ namespace Elux.Application.Commands.Cart.Handler
                     Date = DateOnly.FromDateTime(item.ServiceDate.Date),
                     Start = TimeOnly.FromDateTime(item.ServiceDate),
                     End = TimeOnly.FromDateTime(item.ServiceDate).AddMinutes(20),
-                    ExpertId = item.ExpertId,
-                    ServiceId = item.ServiceIds
+                    ExpertId = item.ExpertId
                 });
             }
+            var failedBookItems = new List<Booking>();
+            var succededBookItems = new List<Booking>();
+
             foreach (var bookItem in bookItems)
             {
                 var booking = context.Bookings.Where(x => x.ExpertId == bookItem.ExpertId && x.Date == bookItem.Date);
@@ -46,17 +48,18 @@ namespace Elux.Application.Commands.Cart.Handler
                     break;
 
                 if (!GetExpertBusyTimeQueryHandler.CheckBooking(booking, bookItem.Start, bookItem.End))
-                {
-                    var item = bookServiceItem.Where(x => x.ServiceIds == bookItem.ServiceId).FirstOrDefault();
-
-                    return AppResponse.Failed($"The {item.ServiceDuration} Service booking date already exists. \n Please check correct Date.");
-                }
+                    failedBookItems.Add(bookItem);
+                else
+                    succededBookItems.Add(bookItem);
             }
+            if (failedBookItems.Count != 0)
+                return BaseResponse<Booking>.Failed(failedBookItems, "You can not book this Service(s).");
+
             context.Bookings.AddRange(bookItems);
             context.BookServiceItems.AddRange(bookServiceItem);
             await context.SaveChangesAsync(cancellationToken);
 
-            return AppResponse.Success();
+            return BaseResponse<Booking>.Success(succededBookItems);
         }
     }
 }
